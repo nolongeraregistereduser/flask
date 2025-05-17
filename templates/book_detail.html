@@ -1,0 +1,176 @@
+{% include 'header.html' %}
+
+<div class="container mt-5">
+    <nav aria-label="breadcrumb" class="mb-4 fade-in">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-decoration-none">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('catalogue') }}" class="text-decoration-none">Catalogue</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ book.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row g-5 mb-5">
+        <!-- Image du livre avec style amélioré -->
+        <div class="col-lg-4 col-md-5 mb-4 fade-in">
+            <div class="position-relative">
+                {% set placeholder_class = "placeholder-php" %}
+                {% if category.name|lower == "informatique" %}
+                    {% set placeholder_class = "placeholder-php" %}
+                {% elif category.name|lower == "science-fiction" %}
+                    {% set placeholder_class = "placeholder-sf" %}
+                {% elif category.name|lower == "roman" %}
+                    {% set placeholder_class = "placeholder-roman" %}
+                {% elif category.name|lower == "histoire" %}
+                    {% set placeholder_class = "placeholder-histoire" %}
+                {% endif %}
+                
+                {% if book.image_url %}
+                    <img src="{{ book.image_url }}" alt="{{ book.title }}" 
+                        class="img-fluid rounded-3 shadow-lg book-cover w-100" style="max-height: 500px; object-fit: cover;">
+                {% else %}
+                    <div class="{{ placeholder_class }} rounded-3 shadow-lg book-cover w-100" style="height: 500px;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <h3 class="text-white text-center px-3">{{ book.title }}</h3>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="position-absolute top-0 end-0 p-3">
+                    {% if book.status == 'available' %}
+                        <span class="badge bg-success p-2 px-3 shadow">Disponible</span>
+                    {% else %}
+                        <span class="badge bg-danger p-2 px-3 shadow">Emprunté</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Boutons d'action pour mobile -->
+            <div class="d-md-none mt-4">
+                {% if book.status == 'available' %}
+                    <a href="{{ url_for('login') }}" class="btn btn-primary w-100 mb-2">
+                        <i class="fas fa-sign-in-alt me-2"></i>Connectez-vous pour emprunter
+                    </a>
+                {% else %}
+                    <button class="btn btn-secondary w-100 mb-2" disabled>
+                        <i class="fas fa-clock me-2"></i>Indisponible pour le moment
+                    </button>
+                {% endif %}
+                
+                <a href="{{ url_for('catalogue') }}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-arrow-left me-2"></i>Retour au catalogue
+                </a>
+            </div>
+        </div>
+        
+        <!-- Informations du livre avec style amélioré -->
+        <div class="col-lg-8 col-md-7 fade-in" style="animation-delay: 0.2s;">
+            <h1 class="mb-2">{{ book.title }}</h1>
+            <h4 class="text-muted mb-4">{{ book.author }}</h4>
+            
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
+                                    <i class="fas fa-calendar-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Publication</div>
+                                    <div>{{ book.added_date.strftime('%Y-%m-%d') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
+                                    <i class="fas fa-tag text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Catégorie</div>
+                                    <div><a href="{{ url_for('catalogue') }}" class="text-decoration-none">{{ category.name }}</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-2 me-3">
+                                    <i class="fas fa-info-circle text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="text-muted small">Statut</div>
+                                    <div>{{ "Disponible" if book.status == 'available' else "Emprunté" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h5 class="mb-3">Description</h5>
+                <div class="bg-light p-4 rounded-3">
+                    <p class="mb-0" style="line-height: 1.8;">{{ book.description | nl2br }}</p>
+                </div>
+            </div>
+            
+            <!-- Boutons d'action pour desktop -->
+            <div class="d-none d-md-block mt-4">
+                <div class="d-flex flex-wrap gap-2">
+                    {% if book.status == 'available' %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Connectez-vous pour emprunter
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-clock me-2"></i>Indisponible pour le moment
+                        </button>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('catalogue') }}" class="btn btn-outline-secondary ms-2">
+                        <i class="fas fa-arrow-left me-2"></i>Retour au catalogue
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Livres similaires avec design amélioré -->
+    <div class="mt-5 pt-4 border-top">
+        <h3 class="mb-4 fade-in">Livres similaires</h3>
+        <div class="row g-4">
+            {% for similar_book in similar_books %}
+                <div class="col-lg-3 col-md-4 col-sm-6 fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                    <div class="card h-100 border-0">
+                        <!-- Image avec classe placeholder personnalisée -->
+                        {% set placeholder_class = "placeholder-php" %}
+                        {% if similar_book.category.name|lower == "informatique" %}
+                            {% set placeholder_class = "placeholder-php" %}
+                        {% elif similar_book.category.name|lower == "science-fiction" %}
+                            {% set placeholder_class = "placeholder-sf" %}
+                        {% elif similar_book.category.name|lower == "roman" %}
+                            {% set placeholder_class = "placeholder-roman" %}
+                        {% elif similar_book.category.name|lower == "histoire" %}
+                            {% set placeholder_class = "placeholder-histoire" %}
+                        {% endif %}
+                        
+                        <div class="{{ placeholder_class }} card-img-top" style="height: 200px;">
+                            <div class="d-flex justify-content-center align-items-center h-100">
+                                <h5 class="text-white text-center px-3">{{ similar_book.title }}</h5>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <h5 class="card-title h6">{{ similar_book.title }}</h5>
+                            <p class="card-text text-muted small">{{ similar_book.author }}</p>
+                            <a href="{{ url_for('book_detail', book_id=similar_book.id) }}" class="btn btn-sm btn-outline-primary w-100 mt-2">
+                                <i class="fas fa-info-circle me-1"></i> Voir détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}

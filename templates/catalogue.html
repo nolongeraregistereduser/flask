@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+{% include 'header.html' %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue - Bibliothèque Municipale</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn ease-in 1;
+            animation-fill-mode: forwards;
+            animation-duration: 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Placeholder backgrounds */
+        .placeholder-php {
+            background: linear-gradient(135deg, #4F5D95 0%, #383c5a 100%);
+        }
+        .placeholder-sf {
+            background: linear-gradient(135deg, #6b3fa0 0%, #35205a 100%);
+        }
+        .placeholder-roman {
+            background: linear-gradient(135deg, #b05c3e 0%, #6e3825 100%);
+        }
+        .placeholder-histoire {
+            background: linear-gradient(135deg, #3572A5 0%, #203a58 100%);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-8">
+            <h1 class="mb-2 fade-in">Catalogue de la Bibliothèque</h1>
+            <p class="text-muted lead fade-in" style="animation-delay: 0.1s;">Découvrez et explorez notre collection complète de livres</p>
+        </div>
+    </div>
+    
+    <!-- Filtre et recherche améliorés -->
+    <div class="card shadow-sm mb-5 border-0 fade-in" style="animation-delay: 0.2s;">
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-primary"></i></span>
+                        <input type="text" class="form-control border-start-0 ps-0" id="searchBook" placeholder="Rechercher par titre, auteur...">
+                        <button class="btn btn-primary px-4" type="button">
+                            Rechercher
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="categoryFilter">
+                        <option value="">Toutes les catégories</option>
+                        {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Affichage des filtres actifs -->
+    <div class="mb-4 fade-in" style="animation-delay: 0.3s;">
+        <div class="d-flex align-items-center">
+            <span class="text-muted me-3">Filtres actifs:</span>
+            <span class="badge bg-primary me-2 px-3 py-2">Tous les livres <i class="fas fa-times-circle ms-1"></i></span>
+            <!-- D'autres filtres s'afficheraient ici dynamiquement -->
+        </div>
+    </div>
+    
+    <!-- Liste des livres avec design amélioré -->
+    <div class="row g-4" id="booksList">
+        {% if books %}
+            {% for book in books %}
+            <div class="col-lg-3 col-md-4 col-sm-6 book-card fade-in" style="animation-delay: {{ loop.index * 0.1 }}s;" data-category="{{ book.category_id }}">
+                <div class="card h-100 border-0">
+                    <div class="placeholder-{{ book.category.name|lower }} card-img-top position-relative" style="height: 220px;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <h3 class="text-white text-center px-3">{{ book.title }}</h3>
+                        </div>
+                        <div class="position-absolute top-0 end-0 p-2">
+                            {% if book.status == 'available' %}
+                            <span class="badge bg-success">Disponible</span>
+                            {% else %}
+                            <span class="badge bg-danger">Emprunté</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text text-muted mb-1">{{ book.author }}</p>
+                        <p class="mb-3"><span class="badge bg-light text-dark">{{ book.category.name }}</span></p>
+                        
+                        <div class="mt-auto d-grid gap-2">
+                            <a href="{{ url_for('book_detail', book_id=book.id) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-info-circle me-1"></i> Détails
+                            </a>
+                            <a href="{{ url_for('login') }}" class="btn btn-secondary btn-sm">
+                                {% if book.status == 'available' %}
+                                <i class="fas fa-book me-1"></i> Se connecter pour emprunter
+                                {% else %}
+                                <i class="fas fa-clock me-1"></i> Se connecter pour réserver
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Aucun livre n'est disponible pour le moment.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Pagination améliorée -->
+    <nav aria-label="Page navigation" class="mt-5 mb-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link rounded-start" href="#" tabindex="-1" aria-disabled="true">
+                    <i class="fas fa-chevron-left me-1"></i> Précédent
+                </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link rounded-end" href="#">
+                    Suivant <i class="fas fa-chevron-right ms-1"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cache DOM elements
+        const categoryFilter = document.getElementById('categoryFilter');
+        const searchInput = document.getElementById('searchBook');
+        const searchButton = document.querySelector('.btn-primary[type="button"]');
+        const booksList = document.getElementById('booksList');
+        const activeFiltersContainer = document.querySelector('.d-flex.align-items-center');
+        
+        // Store all books for filtering
+        const allBooks = Array.from(document.querySelectorAll('.book-card'));
+        
+        // Initialize active filters
+        let activeFilters = {
+            category: '',
+            search: ''
+        };
+        
+        // Category filter event
+        categoryFilter.addEventListener('change', function() {
+            activeFilters.category = this.value;
+            applyFilters();
+            updateActiveFiltersDisplay();
+        });
+        
+        // Search functionality
+        searchButton.addEventListener('click', function() {
+            activeFilters.search = searchInput.value.trim().toLowerCase();
+            applyFilters();
+            updateActiveFiltersDisplay();
+        });
+        
+        // Add enter key support for search
+        searchInput.addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                activeFilters.search = this.value.trim().toLowerCase();
+                applyFilters();
+                updateActiveFiltersDisplay();
+            }
+        });
+        
+        // Apply both filters
+        function applyFilters() {
+            allBooks.forEach(book => {
+                let showBook = true;
+                
+                // Category filter
+                if (activeFilters.category) {
+                    const bookCategory = book.querySelector('.badge.bg-light').textContent;
+                    const categoryOption = categoryFilter.querySelector(`option[value="${activeFilters.category}"]`);
+                    const selectedCategoryName = categoryOption ? categoryOption.textContent : '';
+                    
+                    if (selectedCategoryName && bookCategory !== selectedCategoryName) {
+                        showBook = false;
+                    }
+                }
+                
+                // Search filter
+                if (activeFilters.search && showBook) {
+                    const title = book.querySelector('.card-title').textContent.toLowerCase();
+                    const author = book.querySelector('.card-text.text-muted').textContent.toLowerCase();
+                    
+                    if (!title.includes(activeFilters.search) && !author.includes(activeFilters.search)) {
+                        showBook = false;
+                    }
+                }
+                
+                // Show/hide book
+                book.style.display = showBook ? 'block' : 'none';
+            });
+            
+            // Show message if no results
+            checkForEmptyResults();
+        }
+        
+        // Check if no books match filters and display message if needed
+        function checkForEmptyResults() {
+            const visibleBooks = allBooks.filter(book => book.style.display !== 'none');
+            
+            // Remove existing "no results" message if present
+            const existingMessage = booksList.querySelector('.no-results-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Show message if no books are visible
+            if (visibleBooks.length === 0) {
+                const noResultsDiv = document.createElement('div');
+                noResultsDiv.className = 'col-12 text-center py-5 no-results-message';
+                noResultsDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Aucun livre ne correspond à vos critères de recherche.
+                        <button class="btn btn-sm btn-outline-secondary ms-3" id="resetFilters">
+                            <i class="fas fa-undo"></i> Réinitialiser les filtres
+                        </button>
+                    </div>
+                `;
+                booksList.appendChild(noResultsDiv);
+                
+                // Add event listener to reset button
+                document.getElementById('resetFilters').addEventListener('click', resetAllFilters);
+            }
+        }
+        
+        // Update active filters display
+        function updateActiveFiltersDisplay() {
+            // Clear existing filter badges
+            while (activeFiltersContainer.children.length > 1) {
+                activeFiltersContainer.removeChild(activeFiltersContainer.lastChild);
+            }
+            
+            // Default "All books" badge
+            if (!activeFilters.category && !activeFilters.search) {
+                const allBooksFilter = createFilterBadge('Tous les livres', 'resetAllFilters');
+                activeFiltersContainer.appendChild(allBooksFilter);
+                return;
+            }
+            
+            // Category filter badge
+            if (activeFilters.category) {
+                const categoryOption = categoryFilter.querySelector(`option[value="${activeFilters.category}"]`);
+                const categoryName = categoryOption ? categoryOption.textContent : 'Catégorie inconnue';
+                const categoryBadge = createFilterBadge(categoryName, 'resetCategoryFilter');
+                activeFiltersContainer.appendChild(categoryBadge);
+            }
+            
+            // Search filter badge
+            if (activeFilters.search) {
+                const searchBadge = createFilterBadge(`"${activeFilters.search}"`, 'resetSearchFilter');
+                activeFiltersContainer.appendChild(searchBadge);
+            }
+        }
+        
+        // Create a filter badge with remove functionality
+        function createFilterBadge(label, action) {
+            const badge = document.createElement('span');
+            badge.className = 'badge bg-primary me-2 px-3 py-2';
+            badge.innerHTML = `${label} <i class="fas fa-times-circle ms-1"></i>`;
+            
+            badge.addEventListener('click', function() {
+                if (action === 'resetCategoryFilter') {
+                    categoryFilter.value = '';
+                    activeFilters.category = '';
+                } else if (action === 'resetSearchFilter') {
+                    searchInput.value = '';
+                    activeFilters.search = '';
+                } else if (action === 'resetAllFilters') {
+                    resetAllFilters();
+                    return; // Exit early as resetAllFilters handles the refresh
+                }
+                
+                applyFilters();
+                updateActiveFiltersDisplay();
+            });
+            
+            return badge;
+        }
+        
+        // Reset all filters
+        function resetAllFilters() {
+            categoryFilter.value = '';
+            searchInput.value = '';
+            activeFilters.category = '';
+            activeFilters.search = '';
+            
+            // Show all books
+            allBooks.forEach(book => {
+                book.style.display = 'block';
+            });
+            
+            updateActiveFiltersDisplay();
+        }
+        
+        // Initialize with default "All books" filter
+        updateActiveFiltersDisplay();
+    });
+</script>
+</body>
+{% include 'footer.html' %}
+</html>

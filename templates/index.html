@@ -1,0 +1,237 @@
+{% include 'header.html' %}
+
+<!-- Bannière d'accueil améliorée avec arrière-plan -->
+<div class="hero-banner text-center position-relative py-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center; background-size: cover; min-height: 500px; display: flex; align-items: center;">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="display-4 text-white mb-3 fw-bold fade-in">Bienvenue à la Bibliothèque Municipale</h1>
+                <p class="lead text-white mb-4 fade-in" style="animation-delay: 0.2s;">Découvrez notre collection de livres et plongez dans l'univers de la lecture</p>
+                <a href="{{ url_for('catalogue') }}" class="btn btn-primary btn-lg mt-3 fade-in" style="animation-delay: 0.4s;">
+                    <i class="fas fa-book me-2"></i>Explorer notre catalogue
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Section des fonctionnalités avec cartes élégantes -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fade-in">Nos Services</h2>
+        <div class="row text-center g-4">
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.1s;">
+                <div class="card h-100 border-0 bg-white shadow-sm p-4">
+                    <div class="feature-icon mb-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3">
+                            <i class="fas fa-book fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="h4 mb-3">Large Collection</h3>
+                    <p class="text-muted mb-4">Plus de 10 000 livres disponibles dans différentes catégories pour tous les âges et tous les goûts.</p>
+                    <a href="{{ url_for('catalogue') }}" class="btn btn-sm btn-outline-primary mt-auto">Découvrir</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.2s;">
+                <div class="card h-100 border-0 bg-white shadow-sm p-4">
+                    <div class="feature-icon mb-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3">
+                            <i class="fas fa-laptop fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="h4 mb-3">Catalogue en Ligne</h3>
+                    <p class="text-muted mb-4">Consultez notre catalogue en ligne, réservez vos livres et gérez vos emprunts facilement.</p>
+                    <a href="{{ url_for('catalogue') }}" class="btn btn-sm btn-outline-primary mt-auto">Essayer</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.3s;">
+                <div class="card h-100 border-0 bg-white shadow-sm p-4">
+                    <div class="feature-icon mb-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex p-3">
+                            <i class="fas fa-users fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                    <h3 class="h4 mb-3">Espace Communautaire</h3>
+                    <p class="text-muted mb-4">Participez à nos événements, ateliers de lecture et rencontres avec des auteurs.</p>
+                    <a href="{{ url_for('about') }}" class="btn btn-sm btn-outline-primary mt-auto">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section des nouveautés avec cartes améliorées -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-md-8">
+                <h2 class="fade-in">Nouveautés de notre bibliothèque</h2>
+                <p class="text-muted lead fade-in" style="animation-delay: 0.1s;">Découvrez les derniers livres ajoutés à notre collection</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ url_for('catalogue') }}" class="btn btn-outline-primary fade-in" style="animation-delay: 0.2s;">Voir tous les livres</a>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Livre 1 -->
+            <div class="col-md-3 col-sm-6 mb-4 fade-in" style="animation-delay: 0.1s;">
+                <div class="card h-100 border-0 book-card">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x450?text=Apprendre+PHP" class="card-img-top" alt="Apprendre PHP" style="height: 250px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-primary">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title">Apprendre PHP</h5>
+                        <p class="card-text text-muted">Jean Dupuis</p>
+                        <span class="badge bg-light text-dark mb-3">Informatique</span>
+                        <div class="mt-3">
+                            <a href="{{ url_for('catalogue') }}" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="fas fa-info-circle me-1"></i> Voir détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Livre 2 -->
+            <div class="col-md-3 col-sm-6 mb-4 fade-in" style="animation-delay: 0.2s;">
+                <div class="card h-100 border-0 book-card">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x450?text=Dune" class="card-img-top" alt="Dune" style="height: 250px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-primary">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title">Dune</h5>
+                        <p class="card-text text-muted">Frank Herbert</p>
+                        <span class="badge bg-light text-dark mb-3">Science-Fiction</span>
+                        <div class="mt-3">
+                            <a href="{{ url_for('catalogue') }}" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="fas fa-info-circle me-1"></i> Voir détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Livre 3 -->
+            <div class="col-md-3 col-sm-6 mb-4 fade-in" style="animation-delay: 0.3s;">
+                <div class="card h-100 border-0 book-card">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x450?text=L'Étranger" class="card-img-top" alt="L'Étranger" style="height: 250px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-primary">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title">L'Étranger</h5>
+                        <p class="card-text text-muted">Albert Camus</p>
+                        <span class="badge bg-light text-dark mb-3">Roman</span>
+                        <div class="mt-3">
+                            <a href="{{ url_for('catalogue') }}" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="fas fa-info-circle me-1"></i> Voir détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Livre 4 -->
+            <div class="col-md-3 col-sm-6 mb-4 fade-in" style="animation-delay: 0.4s;">
+                <div class="card h-100 border-0 book-card">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/300x450?text=Histoire+du+temps" class="card-img-top" alt="Une brève histoire du temps" style="height: 250px; object-fit: cover;">
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-primary">Nouveau</span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="card-title">Une brève histoire du temps</h5>
+                        <p class="card-text text-muted">Stephen Hawking</p>
+                        <span class="badge bg-light text-dark mb-3">Sciences</span>
+                        <div class="mt-3">
+                            <a href="{{ url_for('catalogue') }}" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="fas fa-info-circle me-1"></i> Voir détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section des actualités avec design plus moderne -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 fade-in">Actualités</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-6 mb-4 fade-in" style="animation-delay: 0.1s;">
+                <div class="card h-100 border-0">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                <i class="fas fa-pencil-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1">Atelier d'écriture créative</h5>
+                                <h6 class="card-subtitle text-muted"><i class="far fa-calendar-alt me-2"></i>15 Mai 2023</h6>
+                            </div>
+                        </div>
+                        <p class="card-text mb-4">Rejoignez notre atelier d'écriture animé par l'auteure locale Caroline Martin. Ouvert à tous niveaux et particulièrement recommandé pour les débutants souhaitant découvrir l'art de l'écriture.</p>
+                        <a href="{{ url_for('about') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-plus-circle me-1"></i> En savoir plus
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4 fade-in" style="animation-delay: 0.2s;">
+                <div class="card h-100 border-0">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3">
+                                <i class="fas fa-exclamation-circle text-danger"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1">Fermeture exceptionnelle</h5>
+                                <h6 class="card-subtitle text-muted"><i class="far fa-calendar-alt me-2"></i>20 Mai 2023</h6>
+                            </div>
+                        </div>
+                        <p class="card-text mb-4">La bibliothèque sera exceptionnellement fermée le 20 mai pour maintenance informatique. Tous les services en ligne resteront accessibles. Nous nous excusons pour la gêne occasionnée.</p>
+                        <a href="{{ url_for('about') }}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-info-circle me-1"></i> Détails
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section d'appel à l'action -->
+<section class="py-5 bg-primary text-white text-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="mb-3">Envie de nous rejoindre ?</h2>
+                <p class="lead mb-4">Créez un compte gratuitement pour accéder à tous nos services et réserver vos livres préférés dès maintenant.</p>
+                <a href="{{ url_for('register') }}" class="btn btn-lg btn-light">
+                    <i class="fas fa-user-plus me-2"></i> Créer un compte
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'footer.html' %}
+
+
+<script></script>
